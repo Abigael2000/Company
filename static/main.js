@@ -73,4 +73,24 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
+
+  // --- Home page expertise filter ---
+  var filterButtons = document.querySelectorAll(".filter-btn");
+  var divisionCards = document.querySelectorAll(".home-division-card");
+  if (filterButtons.length && divisionCards.length) {
+    filterButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        var filter = button.getAttribute("data-filter");
+        filterButtons.forEach(function (item) {
+          var isActive = item === button;
+          item.classList.toggle("active", isActive);
+          item.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+        divisionCards.forEach(function (card) {
+          var matches = filter === "all" || card.getAttribute("data-division") === filter;
+          card.classList.toggle("is-hidden", !matches);
+        });
+      });
+    });
+  }
 });

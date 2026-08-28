@@ -3,15 +3,27 @@
 {% block meta_description %}JADAS-SAS propose des solutions intégrées en tourisme, ressources humaines, logistique, fournitures, services techniques, impression et import-export en République Démocratique du Congo.{% endblock %}
 {% block content %}
 
-  <section class="hero">
-    <span class="eyebrow">JADAS-SAS</span>
-    <h1>Des solutions professionnelles adaptées à vos besoins</h1>
-    <p class="hero-sub">Nous proposons des solutions intégrées dans les domaines du tourisme, des ressources
-      humaines, de la logistique, de la fourniture, des services techniques, de l'impression et de
-      l'import-export.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="{{ url_for('services') }}">Découvrir nos services</a>
-      <a class="btn btn-ghost" href="{{ url_for('contact') }}">Nous contacter</a>
+  <section class="home-hero">
+    <div class="home-hero-inner">
+      <div class="hero-copy reveal">
+        <span class="eyebrow">Votre partenaire opérationnel en RDC</span>
+        <h1>Une vision claire.<br><em>Des solutions qui avancent.</em></h1>
+        <p>JADAS-SAS rassemble les expertises dont votre activité a besoin, avec une approche simple : comprendre, agir et vous accompagner.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#expertises">Explorer nos expertises <span aria-hidden="true">↘</span></a>
+          <a class="text-link light" href="{{ url_for('quote') }}">Parler de votre projet <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="hero-trust"><span class="trust-mark">✦</span><span>Un seul partenaire pour vos enjeux<br><strong>administratifs, techniques et commerciaux.</strong></span></div>
+      </div>
+      <div class="hero-panel reveal">
+        <div class="panel-top"><span>JADAS / 2026</span><span class="status-dot">● Disponible</span></div>
+        <div class="panel-graphic"><span class="graphic-ring ring-one"></span><span class="graphic-ring ring-two"></span><span class="graphic-core">J</span></div>
+        <p class="panel-label">L'essentiel, au même endroit</p>
+        <h2>Du besoin initial<br>à la solution concrète.</h2>
+        <div class="panel-line"><span>01</span><span>Écoute &amp; cadrage</span><i></i></div>
+        <div class="panel-line"><span>02</span><span>Expertise mobilisée</span><i></i></div>
+        <div class="panel-line"><span>03</span><span>Suivi dans la durée</span><i></i></div>
+      </div>
     </div>
   </section>
 
@@ -28,108 +40,65 @@
       <span class="stat-num" data-count-to="11">0</span>
       <span class="stat-label">Secteurs desservis</span>
     </div>
-    <div class="stat-box">
-      <span class="stat-num" data-count-to="1">0</span>
+    <div class="stat-box stat-highlight">
+      <span class="stat-num">1<span class="stat-plus">×</span></span>
       <span class="stat-label">Partenaire, plusieurs solutions</span>
     </div>
   </div>
 
   <main>
-    <section class="section-heading reveal">
-      <span class="eyebrow" style="text-align:center;">Qui sommes-nous</span>
-      <h2>Votre partenaire pour des solutions intégrées</h2>
-      <p>Nous accompagnons les entreprises, organisations et particuliers à travers une gamme diversifiée de
-        services conçus pour répondre aux besoins opérationnels, administratifs, logistiques, techniques et
-        commerciaux.</p>
-      <a class="btn btn-outline-navy" href="{{ url_for('about') }}" style="margin-top: 1rem;">En savoir plus</a>
+    <section class="intro-grid reveal">
+      <div><span class="eyebrow">Une expertise qui s'adapte</span><h2>Quand vos enjeux sont multiples, votre partenaire doit être à la hauteur.</h2></div>
+      <div class="intro-copy"><p>Nous accompagnons entreprises, organisations et particuliers avec des services conçus pour répondre aux réalités du terrain en République Démocratique du Congo.</p><a class="text-link" href="{{ url_for('about') }}">Découvrir JADAS-SAS <span aria-hidden="true">→</span></a></div>
     </section>
 
-    <section style="margin-top: 5rem;">
-      <div class="section-heading reveal">
-        <span class="eyebrow" style="text-align:center;">Nos domaines d'expertise</span>
-        <h2>Une offre diversifiée, un seul partenaire</h2>
+    <section id="expertises" class="expertise-section">
+      <div class="section-heading section-heading-left reveal">
+        <div><span class="eyebrow">Nos domaines d'expertise</span><h2>Choisissez votre point de départ.</h2></div>
+        <p>Chaque besoin mérite une réponse précise. Explorez nos domaines et trouvez l'expertise adaptée à votre situation.</p>
       </div>
-      <div class="card-grid reveal">
+      <div class="service-filter reveal" role="tablist" aria-label="Filtrer les domaines d'expertise">
+        <button class="filter-btn active" type="button" data-filter="all" role="tab" aria-selected="true">Tous les domaines</button>
+        {% for division in divisions %}<button class="filter-btn" type="button" data-filter="{{ division.slug }}" role="tab" aria-selected="false">{{ division.name }}</button>{% endfor %}
+      </div>
+      <div class="division-grid reveal">
         {% for division in divisions %}
-          <a href="{{ url_for('division_detail', slug=division.slug) }}" class="division-card">
-            <span class="icon">{{ division.icon }}</span>
-            <h3>{{ division.name }}</h3>
-            <p>{{ division.tagline }}</p>
-            <span class="card-link">Découvrir →</span>
+          <a href="{{ url_for('division_detail', slug=division.slug) }}" class="division-card home-division-card" data-division="{{ division.slug }}">
+            <span class="card-index">0{{ loop.index }}</span><span class="icon">{{ division.icon }}</span>
+            <h3>{{ division.name }}</h3><p>{{ division.tagline }}</p>
+            <span class="card-link">Voir l'expertise <span aria-hidden="true">↗</span></span>
           </a>
         {% endfor %}
       </div>
     </section>
 
-    <section style="margin-top: 5rem;">
-      <div class="section-heading reveal">
-        <span class="eyebrow" style="text-align:center;">Pourquoi nous choisir</span>
-        <h2>Un partenaire fiable, à chaque étape</h2>
-      </div>
-      <div class="card-grid reveal">
-        <div class="why-card">
-          <h3>Expertise multisectorielle</h3>
-          <p>Une offre diversifiée permettant de répondre à plusieurs besoins professionnels auprès d'un même partenaire.</p>
-        </div>
-        <div class="why-card">
-          <h3>Solutions personnalisées</h3>
-          <p>Nous adaptons nos services aux exigences spécifiques de chaque client.</p>
-        </div>
-        <div class="why-card">
-          <h3>Professionnalisme</h3>
-          <p>Une approche fondée sur la qualité, la rigueur et le respect des engagements.</p>
-        </div>
-        <div class="why-card">
-          <h3>Réactivité</h3>
-          <p>Nous privilégions une réponse rapide et efficace aux besoins de nos clients.</p>
-        </div>
-        <div class="why-card">
-          <h3>Respect des normes</h3>
-          <p>Nos interventions sont réalisées dans le respect des exigences professionnelles et de la réglementation applicable.</p>
-        </div>
+    <section class="values-section">
+      <div class="section-heading section-heading-left reveal"><div><span class="eyebrow">Notre différence</span><h2>La rigueur dans les détails. La souplesse dans l'action.</h2></div><p>Une relation de confiance se construit par des engagements tenus et des solutions pensées pour durer.</p></div>
+      <div class="values-grid reveal">
+        <div class="why-card value-feature"><span class="value-number">01</span><h3>Une expertise multisectorielle</h3><p>Plusieurs métiers, un interlocuteur qui comprend la vue d'ensemble.</p></div>
+        <div class="why-card"><span class="value-number">02</span><h3>Des solutions sur mesure</h3><p>Une réponse ajustée à vos exigences et à votre réalité.</p></div>
+        <div class="why-card"><span class="value-number">03</span><h3>Une relation fiable</h3><p>Clarté, réactivité et suivi à chaque étape de la mission.</p></div>
       </div>
     </section>
 
-    <section style="margin-top: 5rem;">
-      <div class="section-heading reveal">
-        <span class="eyebrow" style="text-align:center;">Notre approche</span>
-        <h2>Une méthode claire, en quatre étapes</h2>
-      </div>
+    <section class="approach-section">
+      <div class="approach-intro reveal"><span class="eyebrow">Notre méthode</span><h2>Simple à comprendre.<br>Solide à exécuter.</h2><p>Nous transformons les demandes complexes en prochaines étapes concrètes.</p></div>
       <div class="approach-steps reveal">
-        <div class="approach-step">
-          <span class="step-num">01</span>
-          <h3>Comprendre</h3>
-          <p>Nous identifions vos besoins.</p>
-        </div>
-        <div class="approach-step">
-          <span class="step-num">02</span>
-          <h3>Analyser</h3>
-          <p>Nous étudions votre situation et vos exigences.</p>
-        </div>
-        <div class="approach-step">
-          <span class="step-num">03</span>
-          <h3>Proposer</h3>
-          <p>Nous développons une solution adaptée.</p>
-        </div>
-        <div class="approach-step">
-          <span class="step-num">04</span>
-          <h3>Accompagner</h3>
-          <p>Nous assurons le suivi et l'accompagnement nécessaire.</p>
-        </div>
+        <div class="approach-step"><span class="step-num">01</span><div><h3>Comprendre</h3><p>Nous identifions votre besoin et vos priorités.</p></div></div>
+        <div class="approach-step"><span class="step-num">02</span><div><h3>Analyser</h3><p>Nous étudions votre situation et vos exigences.</p></div></div>
+        <div class="approach-step"><span class="step-num">03</span><div><h3>Proposer</h3><p>Nous construisons une solution adaptée.</p></div></div>
+        <div class="approach-step"><span class="step-num">04</span><div><h3>Accompagner</h3><p>Nous assurons le suivi nécessaire.</p></div></div>
       </div>
     </section>
 
     {% if testimonials %}
-    <section style="margin-top: 5rem;">
-      <div class="section-heading reveal">
-        <span class="eyebrow" style="text-align:center;">Témoignages</span>
-        <h2>Ce que disent nos clients</h2>
-      </div>
-      <div class="card-grid reveal">
+    <section class="testimonials-section">
+      <div class="section-heading section-heading-left reveal"><div><span class="eyebrow">Ils nous font confiance</span><h2>Des collaborations qui parlent d'elles-mêmes.</h2></div><a class="text-link" href="{{ url_for('testimonials') }}">Tous les témoignages <span aria-hidden="true">→</span></a></div>
+      <div class="testimonial-grid reveal">
         {% for t in testimonials %}
           <div class="testimonial-card">
             <p class="quote">&ldquo;{{ t.comment }}&rdquo;</p>
-            <p class="author">{{ t.name }}</p>
+            <p class="author"><span class="author-initial">{{ t.name[0] }}</span>{{ t.name }}</p>
             {% if t.company %}<p class="company">{{ t.company }}</p>{% endif %}
           </div>
         {% endfor %}
@@ -137,13 +106,9 @@
     </section>
     {% endif %}
 
-    <section class="cta-band reveal" style="margin-top: 5rem;">
-      <h2>Un besoin ? Nous avons une solution.</h2>
-      <p>Parlez-nous de votre projet ou de vos besoins. Notre équipe est disponible pour vous proposer une solution adaptée.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="{{ url_for('quote') }}">Demander un devis</a>
-        <a class="btn btn-ghost" href="{{ url_for('contact') }}">Nous contacter</a>
-      </div>
+    <section class="cta-band home-cta reveal">
+      <div><span class="eyebrow">Votre prochaine étape</span><h2>Parlons de ce qu'il vous faut.</h2><p>Décrivez-nous votre besoin. Nous vous aiderons à identifier la bonne solution.</p></div>
+      <a class="btn btn-primary" href="{{ url_for('quote') }}">Demander un devis <span aria-hidden="true">↗</span></a>
     </section>
   </main>
 {% endblock %}
