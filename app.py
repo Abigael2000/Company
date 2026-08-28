@@ -26,10 +26,13 @@ app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-me")
 # but SQLAlchemy 1.4+ requires "postgresql://" — normalize so the same code
 # works locally (SQLite) and on Render (Postgres) unchanged.
 _db_url = os.environ.get("DATABASE_URL", "sqlite:///site.db")
+
 if _db_url.startswith("postgres://"):
-    _db_url = _db_url.replace("postgres://", "postgresql://", 1)
+    _db_url = _db_url.replace("postgres://", "postgresql+psycopg://", 1)
+elif _db_url.startswith("postgresql://"):
+    _db_url = _db_url.replace("postgresql://", "postgresql+psycopg://", 1)
+
 app.config["SQLALCHEMY_DATABASE_URI"] = _db_url
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # --- Security hardening ---------------------------------------------------
 app.config["SESSION_COOKIE_HTTPONLY"] = True
