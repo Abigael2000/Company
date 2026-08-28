@@ -28,7 +28,8 @@ def _send(to_address: str, subject: str, body: str, reply_to: str = None) -> boo
             server.login(SMTP_USER, SMTP_PASSWORD)
             server.sendmail(SMTP_USER, to_address, msg.as_string())
         return True
-    except smtplib.SMTPException:
+        except Exception as e:
+        print(f"Email sending failed: {e}")
         return False
 
 
