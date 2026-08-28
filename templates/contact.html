@@ -25,15 +25,12 @@
       </div>
     </div>
 
-
     <form class="form" method="post" action="{{ url_for('contact') }}" style="max-width: 640px;">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="form_loaded_at" value="{{ now }}">
 
-    <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off">
-    <input type="hidden" name="form_loaded_at" value="{{ now }}">
-
-    <div class="form-grid">
-  
+      <div class="form-grid">
         <label>
           Nom complet
           <input type="text" name="name" required>
