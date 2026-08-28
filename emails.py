@@ -28,9 +28,9 @@ def _send(to_address: str, subject: str, body: str, reply_to: str = None) -> boo
             server.login(SMTP_USER, SMTP_PASSWORD)
             server.sendmail(SMTP_USER, to_address, msg.as_string())
         return True
-        except Exception as e:
-        print(f"Email sending failed: {e}")
-        return False
+            except Exception as e:
+        print(f"Bulk email sending failed: {e}")
+        return 0, len(addresses)
 
 
 def notify_company(subject: str, body: str, reply_to: str = None) -> bool:
