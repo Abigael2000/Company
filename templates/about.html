@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}À propos — JADAS-SAS{% endblock %}
+{% block meta_description %}Découvrez JADAS-SAS : notre mission, notre vision et nos valeurs au service de vos besoins professionnels, opérationnels et commerciaux.{% endblock %}
+{% block content %}
+  <section class="page-header">
+    <span class="eyebrow" style="text-align:center;">À propos de nous</span>
+    <h1>Une entreprise au service de vos besoins professionnels</h1>
+    <p class="hero-sub">Une entreprise au service des besoins professionnels, opérationnels et commerciaux de ses clients.</p>
+  </section>
+
+  <main>
+    <section class="reveal">
+      <h2>Qui sommes-nous ?</h2>
+      <p style="color: var(--muted); max-width: 760px;">
+        <em>[Contenu à compléter : présentez ici l'historique de JADAS-SAS — date de création, fondateurs,
+        le problème que l'entreprise souhaite résoudre, les marchés qu'elle sert, et ce qui la distingue.
+        Cette section est essentielle pour établir la crédibilité de l'entreprise auprès des visiteurs.]</em>
+      </p>
+    </section>
+
+    <section style="margin-top: 4rem;" class="reveal">
+      <div class="card-grid">
+        <div class="why-card" style="text-align: left;">
+          <h3>Notre mission</h3>
+          <p>Offrir des solutions professionnelles fiables, adaptées et accessibles dans plusieurs secteurs
+            d'activité afin d'accompagner durablement nos clients dans la réalisation de leurs objectifs.</p>
+        </div>
+        <div class="why-card" style="text-align: left;">
+          <h3>Notre vision</h3>
+          <p>Devenir un partenaire de référence en République Démocratique du Congo dans la fourniture de
+            services intégrés destinés aux entreprises, organisations et particuliers.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top: 4rem;">
+      <div class="section-heading reveal">
+        <span class="eyebrow" style="text-align:center;">Nos valeurs</span>
+        <h2>Ce qui guide notre travail</h2>
+      </div>
+      <div class="card-grid reveal">
+        <div class="value-card"><h3>Intégrité</h3></div>
+        <div class="value-card"><h3>Professionnalisme</h3></div>
+        <div class="value-card"><h3>Qualité</h3></div>
+        <div class="value-card"><h3>Responsabilité</h3></div>
+        <div class="value-card"><h3>Innovation</h3></div>
+        <div class="value-card"><h3>Respect</h3></div>
+      </div>
+    </section>
+
+    <section class="cta-band reveal" style="margin-top: 4rem;">
+      <h2>Envie d'en savoir plus ?</h2>
+      <p>Notre équipe est à votre disposition pour répondre à toutes vos questions.</p>
+      <a class="btn btn-primary" href="{{ url_for('contact') }}">Nous contacter</a>
+    </section>
+  </main>
+{% endblock %}

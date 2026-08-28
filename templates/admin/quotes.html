@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+{% block title %}Devis — Admin{% endblock %}
+{% block content %}
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
+    <h1 style="font-size: 1.6rem;">Demandes de devis</h1>
+    <a class="btn btn-outline-navy small" href="{{ url_for('admin.export_quotes_csv') }}">Exporter CSV</a>
+  </div>
+
+  <form class="inline-form" method="get" action="{{ url_for('admin.quotes') }}" style="margin-bottom: 1.5rem; gap: 0.75rem;">
+    <select name="status">
+      <option value="" {{ 'selected' if not status_filter else '' }}>Tous les statuts</option>
+      {% for status in statuses %}
+        <option value="{{ status }}" {{ 'selected' if status == status_filter else '' }}>{{ status }}</option>
+      {% endfor %}
+    </select>
+    <input type="text" name="q" value="{{ search }}" placeholder="Rechercher nom, email, entreprise…">
+    <button type="submit">Filtrer</button>
+    {% if status_filter or search %}<a href="{{ url_for('admin.quotes') }}">Effacer</a>{% endif %}
+  </form>
+
+  {% if quotes %}
+  <table class="admin-table">
+    <thead>
+      <tr><th>Client</th><th>Service</th><th>Message</th><th>Statut</th><th>Reçu</th><th>Mettre à jour</th></tr>
+    </thead>
+    <tbody>
+      {% for q in quotes %}
+      <tr>
+        <td>{{ q.name }}{% if q.company %}<br><span style="color: var(--muted);">{{ q.company }}</span>{% endif %}<br><span style="color: var(--muted);">{{ q.email }}</span>{% if q.phone %}<br><span style="color: var(--muted);">{{ q.phone }}</span>{% endif %}</td>
+        <td>{{ q.service_interest or '—' }}</td>
+        <td>{{ q.message or '—' }}</td>
+        <td><span class="badge badge-{{ q.status }}">{{ q.status }}</span></td>
+        <td>{{ q.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>
+          <form class="inline-form" method="post" action="{{ url_for('admin.update_quote_status', quote_id=q.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <select name="status">
+              {% for status in statuses %}
+                <option value="{{ status }}" {{ 'selected' if status == q.status else '' }}>{{ status }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit">Mettre à jour</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>Aucune demande de devis pour le moment.</p>
+  {% endif %}
+{% endblock %}

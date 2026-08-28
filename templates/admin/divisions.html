@@ -1,0 +1,26 @@
+{% extends "admin/base.html" %}
+{% block title %}Divisions — Admin{% endblock %}
+{% block content %}
+  <h1 style="font-size: 1.6rem; margin-bottom: 1.5rem;">Divisions & services</h1>
+  <p style="color: var(--muted); margin-bottom: 1.5rem;">Cliquez sur une division pour modifier son texte ou gérer ses services.</p>
+
+  <table class="admin-table">
+    <thead><tr><th>Division</th><th>Accroche</th><th>Services</th><th>Statut</th><th></th></tr></thead>
+    <tbody>
+      {% for d in divisions %}
+      <tr>
+        <td>{{ d.icon }} <a href="{{ url_for('admin.division_detail', division_id=d.id) }}">{{ d.name }}</a></td>
+        <td>{{ d.tagline }}</td>
+        <td>{{ d.services|length }}</td>
+        <td><span class="badge {{ 'badge-active' if d.active else 'badge-hidden' }}">{{ 'active' if d.active else 'masquée' }}</span></td>
+        <td class="table-actions">
+          <form method="post" action="{{ url_for('admin.toggle_division', division_id=d.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit">{{ 'Masquer' if d.active else 'Afficher' }}</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

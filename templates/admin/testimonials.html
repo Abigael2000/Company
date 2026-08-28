@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+{% block title %}Témoignages — Admin{% endblock %}
+{% block content %}
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
+    <h1 style="font-size: 1.6rem;">Témoignages</h1>
+    {% if pending_only %}
+      <a class="btn btn-outline-navy small" href="{{ url_for('admin.testimonials') }}">Tout afficher</a>
+    {% else %}
+      <a class="btn btn-outline-navy small" href="{{ url_for('admin.testimonials', pending=1) }}">En attente uniquement</a>
+    {% endif %}
+  </div>
+
+  {% if testimonials %}
+  <table class="admin-table">
+    <thead><tr><th>Nom</th><th>Entreprise</th><th>Commentaire</th><th>Statut</th><th>Reçu</th><th></th></tr></thead>
+    <tbody>
+      {% for t in testimonials %}
+      <tr>
+        <td>{{ t.name }}</td>
+        <td>{{ t.company or '—' }}</td>
+        <td>{{ t.comment }}</td>
+        <td><span class="badge {{ 'badge-won' if t.approved else 'badge-pending' }}">{{ 'approuvé' if t.approved else 'en attente' }}</span></td>
+        <td>{{ t.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td class="table-actions" style="display:flex; gap:0.5rem;">
+          {% if not t.approved %}
+          <form method="post" action="{{ url_for('admin.approve_testimonial', testimonial_id=t.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit">Approuver</button>
+          </form>
+          {% endif %}
+          <form method="post" action="{{ url_for('admin.delete_testimonial', testimonial_id=t.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>Aucun témoignage pour le moment.</p>
+  {% endif %}
+{% endblock %}

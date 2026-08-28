@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Page introuvable — JADAS-SAS{% endblock %}
+{% block meta_description %}Cette page n'existe pas.{% endblock %}
+{% block content %}
+  <section class="page-header">
+    <span class="eyebrow" style="text-align:center;">404</span>
+    <h1>Page introuvable</h1>
+    <p class="hero-sub">La page que vous recherchez a peut-être été déplacée ou n'existe plus.</p>
+  </section>
+  <main style="text-align:center;">
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('home') }}">Retour à l'accueil</a>
+      <a class="btn btn-outline-navy" href="{{ url_for('services') }}">Voir nos services</a>
+    </div>
+  </main>
+{% endblock %}

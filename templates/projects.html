@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Réalisations — JADAS-SAS{% endblock %}
+{% block meta_description %}Découvrez les domaines d'intervention de JADAS-SAS en République Démocratique du Congo.{% endblock %}
+{% block content %}
+  <section class="page-header">
+    <span class="eyebrow" style="text-align:center;">Réalisations</span>
+    <h1>Nos domaines d'intervention</h1>
+    <p class="hero-sub">Cette page présentera prochainement nos projets réalisés : client, secteur, service
+      fourni, localisation et année.</p>
+  </section>
+
+  <main>
+    <div class="card-grid reveal">
+      {% for division in nav_divisions %}
+        <a href="{{ url_for('division_detail', slug=division.slug) }}" class="division-card">
+          <span class="icon">{{ division.icon }}</span>
+          <h3>{{ division.name }}</h3>
+          <p>{{ division.tagline }}</p>
+        </a>
+      {% endfor %}
+    </div>
+
+    <section class="cta-band reveal" style="margin-top: 4rem;">
+      <h2>Un projet en tête ?</h2>
+      <p>Parlons-en — nous serons heureux de vous accompagner.</p>
+      <a class="btn btn-primary" href="{{ url_for('contact') }}">Nous contacter</a>
+    </section>
+  </main>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Nos secteurs — JADAS-SAS{% endblock %}
+{% block meta_description %}JADAS-SAS accompagne les entreprises, ONG, institutions et organisations dans de nombreux secteurs en République Démocratique du Congo.{% endblock %}
+{% block content %}
+  <section class="page-header">
+    <span class="eyebrow" style="text-align:center;">Nos secteurs</span>
+    <h1>Qui accompagnons-nous ?</h1>
+    <p class="hero-sub">Nos solutions s'adressent à un large éventail d'organisations et de secteurs d'activité.</p>
+  </section>
+
+  <main>
+    <div class="card-grid reveal">
+      <div class="why-card" style="text-align:left;">
+        <h3>Entreprises</h3>
+        <p>Solutions RH, logistiques, fournitures et techniques.</p>
+      </div>
+      <div class="why-card" style="text-align:left;">
+        <h3>ONG & Organisations</h3>
+        <p>Personnel, logistique, catering, transport et fournitures.</p>
+      </div>
+      <div class="why-card" style="text-align:left;">
+        <h3>Secteur industriel</h3>
+        <p>Maintenance, informatique industrielle, équipements et expertise.</p>
+      </div>
+      <div class="why-card" style="text-align:left;">
+        <h3>Construction</h3>
+        <p>Services techniques, études, montage, installation et maintenance.</p>
+      </div>
+      <div class="why-card" style="text-align:left;">
+        <h3>Commerce</h3>
+        <p>Import-export, approvisionnement et distribution.</p>
+      </div>
+      <div class="why-card" style="text-align:left;">
+        <h3>Institutions</h3>
+        <p>Fournitures, recrutement, formation et services professionnels.</p>
+      </div>
+    </div>
+
+    <section style="margin-top: 3.5rem; text-align: center;" class="reveal">
+      <h2 style="font-size: 1.2rem; margin-bottom: 1.5rem;">Nous intervenons également auprès de</h2>
+      <div>
+        {% for tag in ["PME", "Grandes entreprises", "Organisations internationales", "Tourisme", "Services professionnels"] %}
+          <span class="sector-tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="cta-band reveal" style="margin-top: 4rem;">
+      <h2>Votre secteur n'est pas listé ?</h2>
+      <p>Parlons de vos besoins spécifiques — nous adaptons nos solutions à chaque contexte.</p>
+      <a class="btn btn-primary" href="{{ url_for('contact') }}">Nous contacter</a>
+    </section>
+  </main>
+{% endblock %}

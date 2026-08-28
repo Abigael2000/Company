@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Témoignages — JADAS-SAS{% endblock %}
+{% block meta_description %}Découvrez les témoignages de nos clients et partagez votre expérience avec JADAS-SAS.{% endblock %}
+{% block content %}
+  <section class="page-header">
+    <span class="eyebrow" style="text-align:center;">Témoignages</span>
+    <h1>Ce que disent nos clients</h1>
+  </section>
+
+  <main>
+    {% if testimonials %}
+      <div class="card-grid reveal" style="margin-bottom: 3.5rem;">
+        {% for t in testimonials %}
+          <div class="testimonial-card">
+            <p class="quote">&ldquo;{{ t.comment }}&rdquo;</p>
+            <p class="author">{{ t.name }}</p>
+            {% if t.company %}<p class="company">{{ t.company }}</p>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="color: var(--muted); margin-bottom: 3.5rem;">Aucun témoignage publié pour le moment.</p>
+    {% endif %}
+
+    <section class="reveal">
+      <h2 style="font-size: 1.3rem;">Partagez votre expérience</h2>
+      <form class="form" method="post" action="{{ url_for('testimonials') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off">
+        <input type="hidden" name="form_loaded_at" value="{{ now }}">
+
+        <label>
+          Nom complet
+          <input type="text" name="name" required>
+        </label>
+        <label>
+          Entreprise (optionnel)
+          <input type="text" name="company">
+        </label>
+        <label>
+          Votre commentaire
+          <textarea name="comment" rows="4" required></textarea>
+        </label>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+      </form>
+      <p style="color: var(--muted); font-size: 0.85rem; margin-top: 1rem;">Les témoignages sont vérifiés avant publication.</p>
+    </section>
+  </main>
+{% endblock %}

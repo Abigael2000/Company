@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Contact — JADAS-SAS{% endblock %}
+{% block meta_description %}Contactez JADAS-SAS pour vos besoins en ressources humaines, logistique, tourisme, fournitures, services techniques ou commerce.{% endblock %}
+{% block content %}
+  <section class="page-header">
+    <span class="eyebrow" style="text-align:center;">Contact</span>
+    <h1>Parlons de votre projet</h1>
+    <p class="hero-sub">Vous recherchez un partenaire pour vos besoins en ressources humaines, logistique,
+      tourisme, fournitures, services techniques ou commerce ? Contactez-nous.</p>
+  </section>
+
+  <main>
+    <div class="card-grid" style="margin-bottom: 3.5rem;">
+      <div class="why-card" style="text-align:left;">
+        <h3>Téléphone</h3>
+        <p>À compléter</p>
+      </div>
+      <div class="why-card" style="text-align:left;">
+        <h3>Email</h3>
+        <p>À compléter</p>
+      </div>
+      <div class="why-card" style="text-align:left;">
+        <h3>Adresse</h3>
+        <p>À compléter — République Démocratique du Congo</p>
+      </div>
+    </div>
+
+
+    <form class="form" method="post" action="{{ url_for('contact') }}" style="max-width: 640px;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off">
+    <input type="hidden" name="form_loaded_at" value="{{ now }}">
+
+    <div class="form-grid">
+  
+        <label>
+          Nom complet
+          <input type="text" name="name" required>
+        </label>
+        <label>
+          Entreprise / Organisation
+          <input type="text" name="company">
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required>
+        </label>
+        <label>
+          Téléphone
+          <input type="tel" name="phone">
+        </label>
+      </div>
+      <label>
+        Service recherché
+        <select name="service_interest">
+          <option value="">Sélectionnez un service</option>
+          {% for division in divisions %}
+            <optgroup label="{{ division.name }}">
+              {% for service in division.services %}
+                <option value="{{ service.name }}" {{ 'selected' if service.name == preselected or division.name == preselected else '' }}>{{ service.name }}</option>
+              {% endfor %}
+            </optgroup>
+          {% endfor %}
+          <option value="Autre">Autre</option>
+        </select>
+      </label>
+      <label>
+        Message
+        <textarea name="message" rows="5" required></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary">Envoyer ma demande</button>
+    </form>
+  </main>
+{% endblock %}

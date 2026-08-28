@@ -1,0 +1,59 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ division.name }} — Admin{% endblock %}
+{% block content %}
+  <p><a href="{{ url_for('admin.divisions') }}">← Toutes les divisions</a></p>
+  <h1 style="font-size: 1.6rem; margin: 1rem 0 1.5rem;">{{ division.icon }} {{ division.name }}</h1>
+
+  <div class="admin-section">
+    <h2>Modifier la division</h2>
+    <form class="form" method="post" action="{{ url_for('admin.division_detail', division_id=division.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="action" value="update_division">
+      <label>Nom<input type="text" name="name" value="{{ division.name }}" required></label>
+      <label>Accroche<input type="text" name="tagline" value="{{ division.tagline }}" required></label>
+      <label>Description<textarea name="description" rows="4" required>{{ division.description }}</textarea></label>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+  </div>
+
+  <div class="admin-section">
+    <h2>Services de cette division</h2>
+    {% if division.services %}
+    <table class="admin-table">
+      <thead><tr><th>Nom</th><th>Points clés</th><th>Statut</th><th></th></tr></thead>
+      <tbody>
+        {% for s in division.services %}
+        <tr>
+          <td>{{ s.name }}</td>
+          <td style="white-space: pre-line; color: var(--muted);">{{ s.bullets }}</td>
+          <td><span class="badge {{ 'badge-active' if s.active else 'badge-hidden' }}">{{ 'actif' if s.active else 'masqué' }}</span></td>
+          <td class="table-actions" style="display:flex; gap:0.5rem;">
+            <form method="post" action="{{ url_for('admin.toggle_service', service_id=s.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit">{{ 'Masquer' if s.active else 'Afficher' }}</button>
+            </form>
+            <form method="post" action="{{ url_for('admin.delete_service', service_id=s.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p>Aucun service dans cette division.</p>
+    {% endif %}
+  </div>
+
+  <div class="admin-section">
+    <h2>Ajouter un service</h2>
+    <form class="form" method="post" action="{{ url_for('admin.division_detail', division_id=division.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="action" value="add_service">
+      <label>Nom du service<input type="text" name="name" required></label>
+      <label>Points clés (un par ligne)<textarea name="bullets" rows="4" placeholder="Un point par ligne"></textarea></label>
+      <button type="submit" class="btn btn-primary">Ajouter le service</button>
+    </form>
+  </div>
+{% endblock %}

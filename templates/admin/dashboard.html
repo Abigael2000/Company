@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard — Admin{% endblock %}
+{% block content %}
+  <h1 style="font-size: 1.6rem; margin-bottom: 1.5rem;">Dashboard</h1>
+
+  <div class="stat-grid">
+    <div class="stat-card"><span class="stat-value">{{ stats.quotes }}</span><span class="stat-label">Demandes de devis</span></div>
+    <div class="stat-card"><span class="stat-value">{{ stats.pending_quotes }}</span><span class="stat-label">Devis en attente</span></div>
+    <div class="stat-card"><span class="stat-value">{{ stats.messages }}</span><span class="stat-label">Messages de contact</span></div>
+    <div class="stat-card"><span class="stat-value">{{ stats.unread_messages }}</span><span class="stat-label">Messages non lus</span></div>
+    <div class="stat-card"><span class="stat-value">{{ stats.testimonials_pending }}</span><span class="stat-label">Témoignages en attente</span></div>
+    <div class="stat-card"><span class="stat-value">{{ stats.subscribers }}</span><span class="stat-label">Abonnés newsletter</span></div>
+  </div>
+
+  <p>
+    Gérez les <a href="{{ url_for('admin.quotes') }}">demandes de devis</a>,
+    <a href="{{ url_for('admin.messages') }}">messages</a>,
+    <a href="{{ url_for('admin.testimonials') }}">témoignages</a>,
+    <a href="{{ url_for('admin.divisions') }}">divisions et services</a>, ou envoyez une
+    <a href="{{ url_for('admin.newsletter') }}">newsletter</a>.
+  </p>
+
+  {% if activity %}
+  <div class="admin-section" style="margin-top: 2.5rem;">
+    <h2>Activité récente</h2>
+    <table class="admin-table">
+      <tbody>
+        {% for item in activity %}
+        <tr>
+          <td><a href="{{ item.url }}">{{ item.text }}</a></td>
+          <td style="color: var(--muted); white-space: nowrap;">{{ item.time.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+{% endblock %}

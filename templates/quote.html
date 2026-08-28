@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Demander un devis — JADAS-SAS{% endblock %}
+{% block meta_description %}Demandez un devis pour vos besoins en ressources humaines, logistique, tourisme, fournitures, services techniques ou commerce.{% endblock %}
+{% block content %}
+  <section class="page-header">
+    <span class="eyebrow" style="text-align:center;">Devis</span>
+    <h1>Demander un devis</h1>
+    <p class="hero-sub">Décrivez votre besoin, nous revenons vers vous rapidement avec une proposition adaptée.</p>
+  </section>
+
+  <main>
+    <form class="form" method="post" action="{{ url_for('quote') }}" style="max-width: 640px;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="form_loaded_at" value="{{ now }}">
+
+      <div class="form-grid">
+        <label>
+          Nom complet
+          <input type="text" name="name" required>
+        </label>
+        <label>
+          Entreprise / Organisation
+          <input type="text" name="company">
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required>
+        </label>
+        <label>
+          Téléphone
+          <input type="tel" name="phone">
+        </label>
+      </div>
+      <label>
+        Service recherché
+        <select name="service_interest" required>
+          <option value="" disabled {{ 'selected' if not preselected else '' }}>Sélectionnez un service</option>
+          {% for division in divisions %}
+            <optgroup label="{{ division.name }}">
+              {% for service in division.services %}
+                <option value="{{ service.name }}" {{ 'selected' if service.name == preselected or division.name == preselected else '' }}>{{ service.name }}</option>
+              {% endfor %}
+            </optgroup>
+          {% endfor %}
+          <option value="Autre">Autre</option>
+        </select>
+      </label>
+      <label>
+        Détails de votre demande
+        <textarea name="message" rows="5" placeholder="Décrivez votre besoin, le contexte, les délais…"></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary">Envoyer ma demande de devis</button>
+    </form>
+  </main>
+{% endblock %}

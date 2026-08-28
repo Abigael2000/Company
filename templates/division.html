@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}{{ division.name }} — JADAS-SAS{% endblock %}
+{% block meta_description %}{{ division.description[:155] }}{% endblock %}
+{% block content %}
+  <section class="division-hero reveal">
+    <span class="icon-lg">{{ division.icon }}</span>
+    <h1>{{ division.name }}</h1>
+    <p>{{ division.description }}</p>
+    <div class="hero-actions" style="justify-content: flex-start; margin-top: 1.5rem;">
+      <a class="btn btn-primary" href="{{ url_for('quote', service=division.name) }}">Demander un devis</a>
+      <a class="btn btn-ghost" href="{{ url_for('contact') }}">Parler à un conseiller</a>
+    </div>
+  </section>
+
+  <main>
+    <div class="reveal">
+      {% for service in division.services %}
+        {% if service.active %}
+        <div class="service-block">
+          <h3>{{ service.name }}</h3>
+          {% set bullets = service.bullet_list() %}
+          {% if bullets %}
+            <ul>
+              {% for bullet in bullets %}<li>{{ bullet }}</li>{% endfor %}
+            </ul>
+          {% elif service.description %}
+            <p style="color: var(--muted); margin: 0;">{{ service.description }}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <section style="margin-top: 3rem;" class="reveal">
+      <h2 style="font-size: 1.2rem;">Autres domaines d'expertise</h2>
+      <div class="other-divisions">
+        {% for other in other_divisions %}
+          <a href="{{ url_for('division_detail', slug=other.slug) }}">{{ other.icon }} {{ other.name }}</a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="cta-band reveal" style="margin-top: 3rem;">
+      <h2>Un besoin lié à {{ division.name.lower() }} ?</h2>
+      <p>Contactez-nous pour discuter de votre projet ou demandez directement un devis.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{{ url_for('quote', service=division.name) }}">Demander un devis</a>
+        <a class="btn btn-ghost" href="{{ url_for('contact') }}">Nous contacter</a>
+      </div>
+    </section>
+  </main>
+{% endblock %}
