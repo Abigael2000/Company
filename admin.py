@@ -15,7 +15,7 @@ from models import (
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 def login_required(view):

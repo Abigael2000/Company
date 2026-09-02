@@ -7,7 +7,7 @@ databases:
 services:
   - type: web
     name: jadas-sas
-    env: python
+    runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
