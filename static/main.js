@@ -1,238 +1,192 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // --- Mobile nav toggle with smooth animation ---
-  var toggle = document.querySelector(".nav-toggle");
-  var nav = document.querySelector(".site-header nav");
+  // --- 1. Mobile Nav Toggle ---
+  const toggle = document.querySelector(".nav-toggle");
+  const nav = document.querySelector(".site-header nav");
   if (toggle && nav) {
-    toggle.addEventListener("click", function () {
+    toggle.addEventListener("click", () => {
       nav.classList.toggle("open");
       toggle.setAttribute("aria-expanded", nav.classList.contains("open"));
     });
-    
-    // Close nav when a link is clicked
-    var navLinks = nav.querySelectorAll("a");
-    navLinks.forEach(function(link) {
-      link.addEventListener("click", function() {
+    nav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
         nav.classList.remove("open");
         toggle.setAttribute("aria-expanded", "false");
       });
     });
   }
 
-  // --- Scroll-reveal animations with stagger effect ---
-  var revealEls = document.querySelectorAll(".reveal");
+  // --- 2. Scroll-Reveal Animations (Staggered) ---
+  const revealEls = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window && revealEls.length) {
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry, index) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, index) => {
           if (entry.isIntersecting) {
-            // Add a small delay based on element position for stagger effect
-            setTimeout(function() {
-              entry.target.classList.add("in-view");
-            }, index * 50);
+            setTimeout(() => entry.target.classList.add("in-view"), index * 80);
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
     );
-    revealEls.forEach(function (el) { observer.observe(el); });
+    revealEls.forEach(el => observer.observe(el));
   } else {
-    revealEls.forEach(function (el) { el.classList.add("in-view"); });
+    revealEls.forEach(el => el.classList.add("in-view"));
   }
 
-  // --- Animated stat counters with easing ---
-  var counters = document.querySelectorAll("[data-count-to]");
+  // --- 3. Animated Stat Counters ---
+  const counters = document.querySelectorAll("[data-count-to]");
   if ("IntersectionObserver" in window && counters.length) {
-    var counterObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
+    const counterObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
           if (!entry.isIntersecting) return;
-          var el = entry.target;
-          var target = parseInt(el.getAttribute("data-count-to"), 10) || 0;
-          var duration = 1200;
-          var start = null;
+          const el = entry.target;
+          const target = parseInt(el.getAttribute("data-count-to"), 10) || 0;
+          const duration = 1500;
+          let start = null;
 
-          function easeOutQuad(t) {
-            return t * (2 - t);
-          }
-
-          function step(timestamp) {
+          const easeOutQuad = t => t * (2 - t);
+          const step = timestamp => {
             if (!start) start = timestamp;
-            var progress = Math.min((timestamp - start) / duration, 1);
-            var easedProgress = easeOutQuad(progress);
-            el.textContent = Math.floor(easedProgress * target);
-            if (progress < 1) {
-              window.requestAnimationFrame(step);
-            } else {
-              el.textContent = target;
-            }
-          }
+            const progress = Math.min((timestamp - start) / duration, 1);
+            el.textContent = Math.floor(easeOutQuad(progress) * target);
+            if (progress < 1) window.requestAnimationFrame(step);
+            else el.textContent = target;
+          };
           window.requestAnimationFrame(step);
           counterObserver.unobserve(el);
         });
       },
       { threshold: 0.5 }
     );
-    counters.forEach(function (el) { counterObserver.observe(el); });
+    counters.forEach(el => counterObserver.observe(el));
   }
 
-  // --- Header scroll effect (background change on scroll) ---
-  var header = document.querySelector(".site-header");
+  // --- 4. Header Scroll Shadow ---
+  const header = document.querySelector(".site-header");
   if (header) {
-    window.addEventListener("scroll", function() {
-      if (window.scrollY > 10) {
-        header.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.12)";
-      } else {
-        header.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.06)";
-      }
+    window.addEventListener("scroll", () => {
+      header.style.boxShadow = window.scrollY > 20 
+        ? "0 10px 30px rgba(0, 0, 0, 0.08)" 
+        : "0 1px 2px 0 rgb(0 0 0 / 0.05)";
     });
   }
 
-  // --- Pre-fill service dropdowns from a ?service= query param ---
-  var params = new URLSearchParams(window.location.search);
-  var serviceParam = params.get("service");
-  if (serviceParam) {
-    var select = document.querySelector('select[name="service_interest"]');
-    if (select) {
-      for (var i = 0; i < select.options.length; i++) {
-        if (select.options[i].value === serviceParam) {
-          select.selectedIndex = i;
-          break;
-        }
-      }
-    }
-  }
-
-  // --- Home page expertise filter with smooth transitions ---
-  var filterButtons = document.querySelectorAll(".filter-btn");
-  var divisionCards = document.querySelectorAll(".home-division-card");
+  // --- 5. Smooth Expertise Filtering (No Layout Shift) ---
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const divisionCards = document.querySelectorAll(".home-division-card");
+  
   if (filterButtons.length && divisionCards.length) {
-    filterButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        var filter = button.getAttribute("data-filter");
-        filterButtons.forEach(function (item) {
-          var isActive = item === button;
-          item.classList.toggle("active", isActive);
-          item.setAttribute("aria-selected", isActive ? "true" : "false");
-        });
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const filter = button.getAttribute("data-filter");
         
-        // Fade out, filter, fade in with animation
-        divisionCards.forEach(function (card, index) {
-          var matches = filter === "all" || card.getAttribute("data-division") === filter;
+        // Update active button state
+        filterButtons.forEach(btn => {
+          btn.classList.remove("active");
+          btn.setAttribute("aria-selected", "false");
+        });
+        button.classList.add("active");
+        button.setAttribute("aria-selected", "true");
+
+        // Animate cards
+        divisionCards.forEach(card => {
+          const matches = filter === "all" || card.getAttribute("data-division") === filter;
+          
           if (matches) {
-            card.style.opacity = "0";
-            card.style.pointerEvents = "none";
-            card.classList.remove("is-hidden");
-            setTimeout(function() {
-              card.style.transition = "opacity 0.3s ease";
-              card.style.opacity = "1";
-              card.style.pointerEvents = "auto";
-              setTimeout(function() {
-                card.style.transition = "";
-              }, 300);
-            }, 10);
+            card.classList.remove("is-hidden", "fade-out");
+            // Force reflow to restart animation
+            void card.offsetWidth; 
+            card.classList.add("fade-in");
           } else {
-            card.classList.add("is-hidden");
-            card.style.opacity = "0";
-            card.style.pointerEvents = "none";
+            card.classList.remove("fade-in");
+            card.classList.add("fade-out");
+            setTimeout(() => {
+              if (!card.classList.contains("fade-in")) {
+                card.classList.add("is-hidden");
+                card.classList.remove("fade-out");
+              }
+            }, 300); // Matches CSS transition duration
           }
         });
       });
     });
   }
 
-  // --- Smooth scroll for anchor links ---
-  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+  // --- 6. 3D Tilt Micro-Interaction on Division Cards ---
+  const tiltCards = document.querySelectorAll(".home-division-card");
+  tiltCards.forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -4; // Max 4deg tilt
+      const rotateY = ((x - centerX) / centerX) * 4;
+
+      card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(800px) rotateX(0) rotateY(0) translateY(0)";
+      card.style.transition = "transform 0.4s ease, box-shadow 0.3s ease, border-color 0.3s ease";
+    });
+    
+    card.addEventListener("mouseenter", () => {
+      card.style.transition = "none"; // Remove transition for instant follow on mousemove
+    });
+  });
+
+  // --- 7. Smooth Scroll for Anchor Links ---
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
-      var target = document.querySelector(this.getAttribute('href'));
+      const target = document.querySelector(this.getAttribute('href'));
       if (target) {
-        var headerHeight = document.querySelector('.site-header').offsetHeight || 0;
-        var targetPosition = target.offsetTop - headerHeight - 20;
+        const headerHeight = document.querySelector('.site-header')?.offsetHeight || 0;
         window.scrollTo({
-          top: targetPosition,
+          top: target.offsetTop - headerHeight - 20,
           behavior: 'smooth'
         });
       }
     });
   });
 
-  // --- Interactive parallax background for hero section ---
-  var heroSection = document.querySelector(".home-hero");
-  if (heroSection) {
-    window.addEventListener("mousemove", function(e) {
-      var heroElements = heroSection.querySelectorAll(".home-hero::before, .home-hero::after");
-      var x = (e.clientX / window.innerWidth) * 5;
-      var y = (e.clientY / window.innerHeight) * 5;
-      
-      // Subtle parallax effect on hero background
-      heroSection.style.backgroundPosition = x + "px " + y + "px";
-    });
-  }
-
-  // --- Form input focus effects ---
-  var formInputs = document.querySelectorAll("input, select, textarea");
-  formInputs.forEach(function(input) {
-    input.addEventListener("focus", function() {
-      this.style.borderColor = "var(--secondary)";
-    });
-    input.addEventListener("blur", function() {
-      this.style.borderColor = "var(--border)";
-    });
-  });
-
-  // --- Add ripple effect to buttons ---
-  var buttons = document.querySelectorAll(".btn, .filter-btn, button");
-  buttons.forEach(function(button) {
+  // --- 8. Subtle Ripple Effect on Primary Buttons Only ---
+  const primaryButtons = document.querySelectorAll(".btn-primary, .btn-devis");
+  primaryButtons.forEach(button => {
     button.addEventListener("click", function(e) {
-      var ripple = document.createElement("span");
-      var rect = button.getBoundingClientRect();
-      var size = Math.max(rect.width, rect.height);
-      var x = e.clientX - rect.left - size / 2;
-      var y = e.clientY - rect.top - size / 2;
+      const ripple = document.createElement("span");
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
       
-      ripple.style.position = "absolute";
-      ripple.style.width = size + "px";
-      ripple.style.height = size + "px";
-      ripple.style.borderRadius = "50%";
-      ripple.style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-      ripple.style.left = x + "px";
-      ripple.style.top = y + "px";
-      ripple.style.pointerEvents = "none";
-      ripple.style.animation = "ripple 0.6s ease-out";
+      ripple.style.cssText = `
+        position: absolute; width: ${size}px; height: ${size}px;
+        border-radius: 50%; background: rgba(255, 255, 255, 0.3);
+        left: ${x}px; top: ${y}px; pointer-events: none;
+        transform: scale(0); animation: ripple 0.6s ease-out;
+      `;
       
-      if (button.style.position === "" || button.style.position === "static") {
+      if (getComputedStyle(button).position === "static") {
         button.style.position = "relative";
         button.style.overflow = "hidden";
       }
       
       button.appendChild(ripple);
-      setTimeout(function() {
-        ripple.remove();
-      }, 600);
+      setTimeout(() => ripple.remove(), 600);
     });
   });
 
-  // --- Add ripple animation keyframes if not already present ---
+  // Inject ripple keyframes if not present
   if (!document.querySelector("style[data-ripple]")) {
-    var style = document.createElement("style");
+    const style = document.createElement("style");
     style.setAttribute("data-ripple", "true");
     style.textContent = "@keyframes ripple { to { transform: scale(4); opacity: 0; } }";
     document.head.appendChild(style);
-  }
-
-  // --- Add intersection observer for cards to add hover state on view ---
-  var cards = document.querySelectorAll(".division-card, .stat-box, .testimonial-card");
-  if ("IntersectionObserver" in window && cards.length) {
-    var cardObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.style.cursor = "pointer";
-        }
-      });
-    });
-    cards.forEach(function(card) {
-      cardObserver.observe(card);
-    });
   }
 });
