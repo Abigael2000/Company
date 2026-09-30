@@ -103,36 +103,51 @@ document.addEventListener("DOMContentLoaded", function () {
         kicker: "Tourisme & voyage",
         title: "Vous accompagner vers de nouvelles opportunités.",
         description: "Des solutions de voyage professionnelles, pensées pour les entreprises, les organisations et les particuliers.",
-        image: "https://images.unsplash.com/photo-1761342615545-cc970eea273d?auto=format&fit=crop&w=1600&q=88"
+        image: "https://images.unsplash.com/photo-1761342615545-cc970eea273d"
       },
       {
         kicker: "Conseil en ressources humaines",
         title: "Construire des équipes plus fortes.",
         description: "Des solutions humaines et pratiques pour recruter, développer et accompagner vos équipes.",
-        image: "https://images.unsplash.com/photo-1758519290830-5462f4924bb5?auto=format&fit=crop&w=1600&q=88"
+        image: "https://images.unsplash.com/photo-1758519290830-5462f4924bb5"
       },
       {
         kicker: "Logistique",
         title: "Faire avancer vos opérations.",
         description: "Un appui logistique fiable pour garder vos activités et vos marchandises en mouvement.",
-        image: "https://images.unsplash.com/photo-1578857371787-189d8b9eda84?auto=format&fit=crop&w=1600&q=88"
+        image: "https://images.unsplash.com/photo-1578857371787-189d8b9eda84"
       },
       {
         kicker: "Communication",
         title: "Faire porter votre message.",
         description: "Des solutions de communication qui rapprochent votre organisation de ses publics.",
-        image: "https://images.unsplash.com/photo-1653566031535-bcf33e1c2893?auto=format&fit=crop&w=1600&q=88"
+        image: "https://images.unsplash.com/photo-1653566031535-bcf33e1c2893"
       },
       {
         kicker: "Fournitures professionnelles",
         title: "Les bons outils pour chaque journée.",
         description: "Les équipements et fournitures essentiels, réunis pour soutenir le travail de vos équipes.",
-        image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=88"
+        image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2"
       }
     ];
     var activeHeroService = 0;
     var heroImageRequest = 0;
     var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var heroImageWidth = window.innerWidth <= 560 ? 960 : (window.innerWidth <= 900 ? 1200 : 1600);
+    var preloadedHeroServices = {};
+
+    function getHeroImageUrl(service) {
+      return service.image + "?auto=format&fit=crop&w=" + heroImageWidth + "&q=78";
+    }
+
+    function preloadHeroService(index) {
+      if (preloadedHeroServices[index]) return;
+      var image = new Image();
+      image.fetchPriority = "low";
+      image.decoding = "async";
+      image.src = getHeroImageUrl(heroServices[index]);
+      preloadedHeroServices[index] = image;
+    }
 
     function rotateHeroService(index) {
       var service = heroServices[index];
@@ -150,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
           heroTitle.textContent = service.title;
           heroDescription.textContent = service.description;
           activeHeroService = index;
+          preloadHeroService((index + 1) % heroServices.length);
           window.setTimeout(function () {
             heroImage.src = heroNextImage.src;
             heroVisual.classList.remove("is-sliding");
@@ -166,13 +182,16 @@ document.addEventListener("DOMContentLoaded", function () {
         hero.classList.remove("copy-is-changing");
         activeHeroService = index;
       };
-      nextImage.src = service.image;
+      nextImage.src = getHeroImageUrl(service);
     }
 
     window.setInterval(function () {
       if (document.visibilityState !== "visible") return;
       rotateHeroService((activeHeroService + 1) % heroServices.length);
     }, 10000);
+    window.setTimeout(function () {
+      preloadHeroService((activeHeroService + 1) % heroServices.length);
+    }, 700);
   }
 
   // --- Pre-fill service dropdowns from a ?service= query param ---

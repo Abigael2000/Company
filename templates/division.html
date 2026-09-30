@@ -2,16 +2,70 @@
 {% block title %}{{ division.name }} — JADAS-SAS{% endblock %}
 {% block meta_description %}{{ division.description[:155] }}{% endblock %}
 {% block content %}
-  <section class="division-hero reveal" data-division="{{ division.slug }}">
-    <h1>{{ division.name }}</h1>
-    <p>{{ division.description }}</p>
-    <div class="hero-actions" style="justify-content: flex-start; margin-top: 1.5rem;">
-      <a class="btn btn-primary" href="{{ url_for('quote', service=division.name) }}">Demander un devis</a>
-      <a class="btn btn-ghost" href="{{ url_for('contact') }}">Parler à un conseiller</a>
+  {% set division_images = {
+    'tourisme-commerce': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=78',
+    'ressources-humaines': 'https://images.unsplash.com/photo-1573164574397-dd250bc8a598?auto=format&fit=crop&w=1200&q=78',
+    'logistique-services-entreprises': 'https://images.unsplash.com/photo-1697057914230-320d7c251f65?auto=format&fit=crop&w=1200&q=78',
+    'solutions-techniques': 'https://images.unsplash.com/photo-1581092335878-2d9ff86ca2bf?auto=format&fit=crop&w=1200&q=78',
+    'communication-fournitures': 'https://images.unsplash.com/photo-1523726491678-bf852e717f6a?auto=format&fit=crop&w=1200&q=78'
+  } %}
+  {% set division_image = division_images.get(division.slug, 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=78') %}
+  {% set service_gallery = {
+    'tourisme-commerce': [
+      {'src': 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=78', 'alt': 'Destination naturelle pour les séjours touristiques', 'label': 'Séjours & destinations'},
+      {'src': 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=900&q=78', 'alt': 'Préparation d’un voyage avec carte et documents', 'label': 'Voyages organisés'}
+    ],
+    'ressources-humaines': [
+      {'src': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=78', 'alt': 'Équipe de professionnels collaborant au travail', 'label': 'Équipe & recrutement'},
+      {'src': 'https://images.squarespace-cdn.com/content/v1/627b76d6662c1b12550be9c5/faf25e80-9b84-41fc-81d4-cf3de0cdffb5/ngozi-ejionueme-nLxOjC5d_0Y-unsplash.jpg', 'alt': 'Black woman leading a professional training session', 'label': 'Formation professionnelle'}
+    ],
+    'logistique-services-entreprises': [
+      {'src': 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=78', 'alt': 'Entrepôt organisé pour le stockage et la distribution de marchandises', 'label': 'Entreposage & distribution'},
+      {'src': 'https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?auto=format&fit=crop&w=900&q=78', 'alt': 'Conteneurs de fret dans une zone portuaire', 'label': 'Transport de marchandises'}
+    ],
+    'solutions-techniques': [
+      {'src': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=900&q=78', 'alt': 'Technicienne travaillant sur un équipement professionnel', 'label': 'Installation & expertise'},
+      {'src': 'https://images.unsplash.com/photo-1581092335878-2d9ff86ca2bf?auto=format&fit=crop&w=900&q=78', 'alt': 'Intervention technique sur une installation industrielle', 'label': 'Maintenance technique'}
+    ],
+    'communication-fournitures': [
+      {'src': 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=900&q=78', 'alt': 'Conception graphique et création de supports de communication', 'label': 'Design & communication'},
+      {'src': 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=78', 'alt': 'Espace de travail équipé pour les activités professionnelles', 'label': 'Fournitures de bureau'}
+    ]
+  } %}
+  {% set gallery_images = service_gallery.get(division.slug, []) %}
+  <section class="division-hero" data-division="{{ division.slug }}">
+    <div class="division-hero-copy">
+      <span class="eyebrow">Nos expertises</span>
+      <h1>{{ division.name }}</h1>
+      <p>{{ division.description }}</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{{ url_for('quote', service=division.name) }}">Demander un devis</a>
+        <a class="btn btn-ghost" href="{{ url_for('contact') }}">Parler à un conseiller</a>
+      </div>
+    </div>
+    <div class="division-hero-image">
+      <img src="{{ division_image }}" alt="" loading="eager" fetchpriority="high" decoding="async">
     </div>
   </section>
 
   <main>
+    {% if gallery_images %}
+    <section class="service-gallery reveal" aria-label="Images illustrant {{ division.name }}">
+      <div class="service-gallery-heading">
+        <span class="eyebrow">Nos domaines d’intervention</span>
+        <h2>Des solutions adaptées à vos besoins</h2>
+      </div>
+      <div class="service-gallery-grid">
+        {% for image in gallery_images %}
+        <figure class="service-gallery-card">
+          <img src="{{ image.src }}" alt="{{ image.alt }}" loading="lazy" decoding="async">
+          <figcaption>{{ image.label }}</figcaption>
+        </figure>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
     <div class="reveal">
       {% for service in division.services %}
         {% if service.active %}

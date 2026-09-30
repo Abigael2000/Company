@@ -2230,3 +2230,64 @@ a, button, .division-card, .filter-btn {
   .newsletter-form input[type="email"] { width: 100%; min-width: 0; }
   .footer-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Service detail pages: clear copy with a dedicated, service-specific photo. */
+.division-hero[data-division] {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  min-height: 420px;
+  padding: 4.5rem 7vw;
+  overflow: hidden;
+  color: #152238;
+  background: linear-gradient(125deg, #f1f6fc, #e6eef7);
+  font-family: "Lato", system-ui, sans-serif;
+}
+.division-hero .division-hero-copy { position: relative; z-index: 1; max-width: 650px; min-width: 0; }
+.division-hero .division-hero-copy .eyebrow { margin-bottom: 1.1rem; color: #315477; }
+.division-hero .division-hero-copy h1 { max-width: 650px; margin-bottom: 1rem; color: #152238; font-size: clamp(2.5rem, 4.5vw, 4.1rem); line-height: 1.08; }
+.division-hero .division-hero-copy h1,
+.service-gallery h2,
+.service-gallery-card figcaption { font-family: "Plus Jakarta Sans", system-ui, sans-serif; }
+.division-hero .division-hero-copy p { max-width: 600px; margin: 0; color: #526176; font-size: 1.04rem; line-height: 1.75; }
+.division-hero .division-hero-copy .hero-actions { justify-content: flex-start; margin-top: 1.6rem; }
+.division-hero .division-hero-copy .btn-ghost { border: 1px solid rgba(25,59,97,.24); color: #193b61; background: rgba(255,255,255,.7); box-shadow: none; backdrop-filter: none; }
+.division-hero .division-hero-copy .btn-ghost:hover { border-color: #193b61; color: white; background: #193b61; }
+.division-hero-image { min-width: 0; height: clamp(290px, 32vw, 410px); overflow: hidden; border-radius: 18px; background: #dce8f4; }
+.division-hero-image img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.service-gallery { margin: 0 0 3.25rem; font-family: "Lato", system-ui, sans-serif; }
+.service-gallery-heading { margin-bottom: 1.25rem; }
+.service-gallery-heading .eyebrow { color: #315477; }
+.service-gallery h2 { margin: .35rem 0 0; color: #152238; font-size: clamp(1.45rem, 2.7vw, 2rem); }
+.service-gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.service-gallery-card { position: relative; min-width: 0; height: clamp(190px, 23vw, 285px); margin: 0; overflow: hidden; border-radius: 14px; background: #e7edf3; }
+.service-gallery-card::after { position: absolute; inset: 45% 0 0; content: ""; background: linear-gradient(transparent, rgba(10, 22, 38, .65)); pointer-events: none; }
+.service-gallery-card img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease; }
+.service-gallery-card:hover img { transform: scale(1.035); }
+.service-gallery-card figcaption { position: absolute; z-index: 1; right: 1rem; bottom: .9rem; left: 1rem; color: #fff; font-size: .94rem; font-weight: 600; }
+@media (max-width: 760px) {
+  .division-hero[data-division] {
+    grid-template-columns: minmax(0, 1fr) minmax(100px, 30%);
+    grid-template-areas: "kicker kicker" "title title" "description description" "actions image";
+    align-items: stretch;
+    gap: .65rem 1rem;
+    min-height: 0;
+    padding: 2.5rem 6vw;
+  }
+  .division-hero .division-hero-copy { display: contents; }
+  .division-hero .division-hero-copy .eyebrow { grid-area: kicker; justify-self: start; margin: 0; }
+  .division-hero .division-hero-copy h1 { grid-area: title; margin: 0; font-size: clamp(2rem, 8vw, 3rem); }
+  .division-hero .division-hero-copy p { grid-area: description; }
+  .division-hero .division-hero-copy .hero-actions { grid-area: actions; align-self: center; justify-content: center; flex-direction: column; align-items: stretch; gap: .65rem; margin: 0; }
+  .division-hero-image { grid-area: image; height: 100%; min-height: 150px; align-self: stretch; }
+  .service-gallery { margin-bottom: 2.5rem; }
+  .service-gallery-card { height: 210px; }
+}
+@media (max-width: 480px) {
+  .division-hero[data-division] { grid-template-columns: minmax(0, 1fr) minmax(88px, 30%); gap: .6rem .75rem; padding-block: 2rem; }
+  .division-hero .division-hero-copy .hero-actions .btn { justify-content: center; width: 100%; min-width: 0; padding: .7rem .6rem; font-size: .76rem; text-align: center; }
+  .division-hero-image { min-height: 138px; border-radius: 12px; }
+  .service-gallery-grid { grid-template-columns: minmax(0, 1fr); }
+  .service-gallery-card { height: 220px; }
+}
