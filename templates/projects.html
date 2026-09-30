@@ -12,8 +12,8 @@
   <main>
     <div class="card-grid reveal">
       {% for division in nav_divisions %}
-        <a href="{{ url_for('division_detail', slug=division.slug) }}" class="division-card">
-          <span class="icon">{{ division.icon }}</span>
+        <a href="{{ url_for('division_detail', slug=division.slug) }}" class="division-card" data-division="{{ division.slug }}">
+          <span class="service-photo" aria-hidden="true"></span>
           <h3>{{ division.name }}</h3>
           <p>{{ division.tagline }}</p>
         </a>

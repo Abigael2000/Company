@@ -18,7 +18,7 @@
   <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
   {% block structured_data %}
@@ -34,26 +34,19 @@
   {% endblock %}
 </head>
 <body>
-  <header class="site-header">
-    <a href="{{ url_for('home') }}" class="logo">JADAS<span>-SAS</span></a>
-    <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
-    <nav>
+  <header class="site-header{% if request.endpoint == 'home' %} site-header-home{% endif %}">
+    <a href="{{ url_for('home') }}" class="logo"><span class="logo-mark" aria-hidden="true">J</span><span class="logo-name">JADAS<span>-SAS</span></span></a>
+    <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="primary-navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="primary-navigation" aria-label="Navigation principale">
       <a href="{{ url_for('home') }}">Accueil</a>
       <a href="{{ url_for('about') }}">À propos</a>
-      <div class="nav-dropdown">
-        <button type="button">Nos services ▾</button>
-        <div class="nav-dropdown-menu">
-          {% for division in nav_divisions %}
-            <a href="{{ url_for('division_detail', slug=division.slug) }}">{{ division.icon }}&nbsp; {{ division.name }}</a>
-          {% endfor %}
-          <a href="{{ url_for('services') }}"><strong>Voir tous les services →</strong></a>
-        </div>
-      </div>
-      <a href="{{ url_for('sectors') }}">Nos secteurs</a>
+      <a href="{{ url_for('services') }}">Services</a>
+      <a href="{{ url_for('sectors') }}">Secteurs</a>
       <a href="{{ url_for('projects') }}">Réalisations</a>
-      <a href="{{ url_for('testimonials') }}">Témoignages</a>
       <a href="{{ url_for('contact') }}">Contact</a>
-      <a href="{{ url_for('quote') }}" class="btn-devis">Demander un devis</a>
+      <a href="{{ url_for('quote') }}" class="btn-devis">Demander un devis <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
 

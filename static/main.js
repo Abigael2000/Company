@@ -5,7 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (toggle && nav) {
     toggle.addEventListener("click", function () {
       nav.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", nav.classList.contains("open"));
+      var isOpen = nav.classList.contains("open");
+      toggle.setAttribute("aria-expanded", isOpen);
+      toggle.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
+      document.querySelector(".site-header").classList.toggle("menu-open", isOpen);
     });
     
     // Close nav when a link is clicked
@@ -14,6 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
       link.addEventListener("click", function() {
         nav.classList.remove("open");
         toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Ouvrir le menu");
+        document.querySelector(".site-header").classList.remove("menu-open");
       });
     });
   }
@@ -80,12 +85,94 @@ document.addEventListener("DOMContentLoaded", function () {
   var header = document.querySelector(".site-header");
   if (header) {
     window.addEventListener("scroll", function() {
-      if (window.scrollY > 10) {
-        header.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.12)";
-      } else {
-        header.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.06)";
-      }
+      header.classList.toggle("is-scrolled", window.scrollY > 10);
     });
+  }
+
+  // --- Coordinated homepage service rotation ---
+  var hero = document.querySelector(".home-hero");
+  var heroVisual = document.querySelector(".hero-visual");
+  var heroImage = document.querySelector(".hero-image-current");
+  var heroNextImage = document.querySelector(".hero-image-next");
+  var heroKicker = document.querySelector("#hero-service-kicker");
+  var heroTitle = document.querySelector("#hero-service-title");
+  var heroDescription = document.querySelector("#hero-service-description");
+  if (hero && heroVisual && heroImage && heroNextImage && heroKicker && heroTitle && heroDescription) {
+    var heroServices = [
+      {
+        kicker: "Tourisme & voyage",
+        title: "Vous accompagner vers de nouvelles opportunités.",
+        description: "Des solutions de voyage professionnelles, pensées pour les entreprises, les organisations et les particuliers.",
+        image: "https://images.unsplash.com/photo-1761342615545-cc970eea273d?auto=format&fit=crop&w=1600&q=88"
+      },
+      {
+        kicker: "Conseil en ressources humaines",
+        title: "Construire des équipes plus fortes.",
+        description: "Des solutions humaines et pratiques pour recruter, développer et accompagner vos équipes.",
+        image: "https://images.unsplash.com/photo-1758519290830-5462f4924bb5?auto=format&fit=crop&w=1600&q=88"
+      },
+      {
+        kicker: "Logistique",
+        title: "Faire avancer vos opérations.",
+        description: "Un appui logistique fiable pour garder vos activités et vos marchandises en mouvement.",
+        image: "https://images.unsplash.com/photo-1578857371787-189d8b9eda84?auto=format&fit=crop&w=1600&q=88"
+      },
+      {
+        kicker: "Communication",
+        title: "Faire porter votre message.",
+        description: "Des solutions de communication qui rapprochent votre organisation de ses publics.",
+        image: "https://images.unsplash.com/photo-1653566031535-bcf33e1c2893?auto=format&fit=crop&w=1600&q=88"
+      },
+      {
+        kicker: "Fournitures professionnelles",
+        title: "Les bons outils pour chaque journée.",
+        description: "Les équipements et fournitures essentiels, réunis pour soutenir le travail de vos équipes.",
+        image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=88"
+      }
+    ];
+    var activeHeroService = 0;
+    var heroImageRequest = 0;
+    var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function rotateHeroService(index) {
+      var service = heroServices[index];
+      var requestId = ++heroImageRequest;
+      var nextImage = new Image();
+      nextImage.onload = function () {
+        if (requestId !== heroImageRequest) return;
+        hero.classList.add("copy-is-changing");
+        window.setTimeout(function () {
+          if (requestId !== heroImageRequest) return;
+          heroNextImage.src = nextImage.src;
+          heroNextImage.classList.remove("is-animating");
+          heroVisual.classList.add("is-sliding");
+          heroKicker.textContent = String(index + 1).padStart(2, "0") + " / 05 · " + service.kicker;
+          heroTitle.textContent = service.title;
+          heroDescription.textContent = service.description;
+          activeHeroService = index;
+          window.setTimeout(function () {
+            heroImage.src = heroNextImage.src;
+            heroVisual.classList.remove("is-sliding");
+            heroNextImage.removeAttribute("src");
+            heroImage.classList.remove("is-animating");
+            void heroImage.offsetWidth;
+            heroImage.classList.add("is-animating");
+            hero.classList.remove("copy-is-changing");
+          }, reducedMotion ? 0 : 850);
+        }, reducedMotion ? 0 : 180);
+      };
+      nextImage.onerror = function () {
+        if (requestId !== heroImageRequest) return;
+        hero.classList.remove("copy-is-changing");
+        activeHeroService = index;
+      };
+      nextImage.src = service.image;
+    }
+
+    window.setInterval(function () {
+      if (document.visibilityState !== "visible") return;
+      rotateHeroService((activeHeroService + 1) % heroServices.length);
+    }, 10000);
   }
 
   // --- Pre-fill service dropdowns from a ?service= query param ---

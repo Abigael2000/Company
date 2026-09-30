@@ -2,8 +2,7 @@
 {% block title %}{{ division.name }} — JADAS-SAS{% endblock %}
 {% block meta_description %}{{ division.description[:155] }}{% endblock %}
 {% block content %}
-  <section class="division-hero reveal">
-    <span class="icon-lg">{{ division.icon }}</span>
+  <section class="division-hero reveal" data-division="{{ division.slug }}">
     <h1>{{ division.name }}</h1>
     <p>{{ division.description }}</p>
     <div class="hero-actions" style="justify-content: flex-start; margin-top: 1.5rem;">
@@ -35,7 +34,7 @@
       <h2 style="font-size: 1.2rem;">Autres domaines d'expertise</h2>
       <div class="other-divisions">
         {% for other in other_divisions %}
-          <a href="{{ url_for('division_detail', slug=other.slug) }}">{{ other.icon }} {{ other.name }}</a>
+          <a href="{{ url_for('division_detail', slug=other.slug) }}">{{ other.name }}</a>
         {% endfor %}
       </div>
     </section>

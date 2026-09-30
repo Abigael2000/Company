@@ -9,7 +9,7 @@
     <tbody>
       {% for d in divisions %}
       <tr>
-        <td>{{ d.icon }} <a href="{{ url_for('admin.division_detail', division_id=d.id) }}">{{ d.name }}</a></td>
+        <td><a href="{{ url_for('admin.division_detail', division_id=d.id) }}">{{ d.name }}</a></td>
         <td>{{ d.tagline }}</td>
         <td>{{ d.services|length }}</td>
         <td><span class="badge {{ 'badge-active' if d.active else 'badge-hidden' }}">{{ 'active' if d.active else 'masquée' }}</span></td>

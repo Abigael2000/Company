@@ -6,86 +6,19 @@
   <section class="home-hero">
     <div class="home-hero-inner">
       <div class="hero-copy reveal">
-        <span class="eyebrow eyebrow-dark">Votre partenaire opérationnel en RDC</span>
-        <h1>Nous créons des<br><em>solutions qui font avancer</em><br>votre activité.</h1>
-        <p class="hero-subtitle">JADAS-SAS accompagne entreprises et organisations avec des services fiables, clairs et pensés pour la croissance durable.</p>
+        <span class="eyebrow eyebrow-dark" id="hero-service-kicker">01 / 05 · Tourisme &amp; voyage</span>
+        <h1 id="hero-service-title" aria-live="polite">Vous accompagner vers de nouvelles opportunités.</h1>
+        <p class="hero-subtitle" id="hero-service-description">Des solutions de voyage professionnelles, pensées pour les entreprises, les organisations et les particuliers.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="{{ url_for('quote') }}">Découvrir nos services</a>
-          <a class="btn btn-secondary" href="#expertises">Explorer <span aria-hidden="true">↓</span></a>
+          <a class="btn btn-primary" href="#expertises">Explorer nos services <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-secondary" href="{{ url_for('quote') }}">Demander un devis</a>
         </div>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="stat-icon">✓</span>
-            <span class="stat-text"><strong>5 domaines</strong> d'expertise</span>
-          </div>
-          <div class="hero-stat">
-            <span class="stat-icon">✓</span>
-            <span class="stat-text"><strong>Approche simple</strong> et transparente</span>
-          </div>
-          <div class="hero-stat">
-            <span class="stat-icon">✓</span>
-            <span class="stat-text"><strong>Résultats concrets</strong> et durables</span>
-          </div>
-        </div>
+        <p class="hero-proof"><span aria-hidden="true">●</span> Un interlocuteur. Des solutions coordonnées. Un service fiable.</p>
       </div>
 
       <div class="hero-visual reveal" aria-hidden="true">
-        <div class="visual-orb orb-one"></div>
-        <div class="visual-panel">
-          <div class="panel-glass">
-            <div class="panel-badge">JADAS</div>
-
-            <div class="panel-figure booking-page">
-              <div class="booking-header">
-                <span class="booking-pill">Booking</span>
-                <span class="booking-date">Tue 14</span>
-              </div>
-
-              <div class="booking-grid">
-                <div class="booking-sidebar">
-                  <span class="mini-label">Agenda</span>
-                  <div class="side-item active"><span class="dot"></span> Consultation</div>
-                  <div class="side-item"><span class="dot soft"></span> Suivi</div>
-                  <div class="side-item"><span class="dot soft"></span> Audit</div>
-                </div>
-
-                <div class="booking-main">
-                  <div class="booking-card large">
-                    <div class="card-topline">
-                      <span>Client</span>
-                      <span class="status">Confirmé</span>
-                    </div>
-                    <h4>Mission de conseil</h4>
-                    <div class="time-row">
-                      <span>09:30</span>
-                      <span>10:30</span>
-                    </div>
-                  </div>
-
-                  <div class="booking-card small">
-                    <div class="mini-label">Services</div>
-                    <ul>
-                      <li>Stratégie</li>
-                      <li>RH</li>
-                      <li>Logistique</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel-metrics">
-              <div class="metric-card">
-                <strong>+20</strong>
-                <span>Services</span>
-              </div>
-              <div class="metric-card highlight">
-                <strong>11</strong>
-                <span>Secteurs</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <img class="hero-image hero-image-current is-animating" src="https://images.unsplash.com/photo-1761342615545-cc970eea273d?auto=format&amp;fit=crop&amp;w=1600&amp;q=88" alt="">
+        <img class="hero-image hero-image-next" alt="">
       </div>
     </div>
   </section>
@@ -127,7 +60,8 @@
       <div class="division-grid reveal">
         {% for division in divisions %}
           <a href="{{ url_for('division_detail', slug=division.slug) }}" class="division-card home-division-card" data-division="{{ division.slug }}">
-            <span class="card-index">0{{ loop.index }}</span><span class="icon">{{ division.icon }}</span>
+            <span class="service-photo" aria-hidden="true"></span>
+            <span class="card-index">0{{ loop.index }}</span>
             <h3>{{ division.name }}</h3><p>{{ division.tagline }}</p>
             <span class="card-link">Voir l'expertise <span aria-hidden="true">↗</span></span>
           </a>
