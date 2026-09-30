@@ -2188,3 +2188,45 @@ a, button, .division-card, .filter-btn {
   .hero-image.is-animating { animation: none; }
   .hero-image, .hero-copy h1, .hero-copy .eyebrow, .hero-subtitle, .hero-visual { transition: none; }
 }
+
+/* Keep the hero and shared page layouts inside narrow viewports. */
+@media (max-width: 900px) {
+  .home-hero-inner::before {
+    background: linear-gradient(180deg, rgba(232,241,251,.14) 0%, transparent 44%);
+  }
+  .home-hero-inner,
+  .hero-copy,
+  main > *,
+  .site-footer > * { min-width: 0; }
+  .site-header { max-width: 100%; }
+}
+@media (max-width: 560px) {
+  .home-hero-inner { padding-inline: 6vw; }
+  .hero-copy .eyebrow { max-width: 100%; white-space: normal; }
+  .hero-copy h1 {
+    max-width: 100%;
+    font-size: clamp(2.2rem, 10vw, 3.25rem);
+    letter-spacing: -.045em;
+    overflow-wrap: anywhere;
+  }
+  .hero-subtitle { max-width: 100%; overflow-wrap: anywhere; }
+  .hero-copy .hero-actions .btn {
+    width: 100%;
+    min-width: 0;
+    white-space: normal;
+    text-align: center;
+  }
+  .hero-proof { align-items: flex-start; font-size: .82rem; }
+  .hero-visual { height: clamp(240px, 78vw, 340px); }
+  .stats-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-box, .division-card, .testimonial-card,
+  .value-card, .why-card, .approach-step { min-width: 0; }
+  .division-grid, .testimonial-grid { grid-template-columns: minmax(0, 1fr); }
+  .values-grid { grid-template-columns: minmax(0, 1fr); }
+  .page-header, .division-hero { padding-inline: 6vw; }
+  .page-header h1, .division-hero h1 { font-size: clamp(1.8rem, 8vw, 2.5rem); overflow-wrap: anywhere; }
+  .form-grid { grid-template-columns: minmax(0, 1fr); }
+  .form input, .form select, .form textarea,
+  .newsletter-form input[type="email"] { width: 100%; min-width: 0; }
+  .footer-grid { grid-template-columns: minmax(0, 1fr); }
+}
